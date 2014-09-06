@@ -1,126 +1,64 @@
+var fs = require("fs");
 var nconf = require("nconf");
 var fs = require("fs");
-var bodyParser = require('body-parser')
-var dataUriToBuffer = require('data-uri-to-buffer')
-var express = require('express')
-var app = express()
-var shuffle = require("./lib/shuffleGif");
-var pingpong = require("./lib/pingpongGif");
+var bodyParser = require('body-parser');
+var dataUriToBuffer = require('data-uri-to-buffer');
+var express = require('express');
 
-nconf.argv().env().file({ file: 'local.json'});
+var app = express();
+nconf.argv().env().file({ file: '../local.json'});
+
+// Set up some Express settings
+app.use(bodyParser.json({ limit: '1mb' }));
+app.use(express.static(root + '/public'));
 
 function makeDataUri(type, buffer) {
   return 'data:' + type + ';base64,' + buffer.toString('base64');
 }
 
-function imgTag(image) {
-  return "<img src='" + makeDataUri("image/gif", image) + "' />";
-}
-
 
 /**
- * This is your custom transform function
- * move it wherever, call it whatever
- */
-// var transform = require("./transformer")
-
-// Set up some Express settings
-app.use(bodyParser.json({ limit: '1mb' }))
-app.use(express.static(__dirname + '/public'))
-
-/**
- * Home route serves index.html file, and
- * responds with 200 by default for revisit
- */
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html')
-})
-
-
-/**
- * Shuffle Service
- */
-
-app.get('/shuffle', function (req, res) {
-  res.status(200).end();
-});
-
-
-app.get('/shuffle/service', function(req, res) {
-
-  var buffer = dataUriToBuffer(req.body.content.data);
-
-  if (buffer.type !== 'image/gif') {
-    return res.json(req.body);
-  }
-
-  shuffle(buffer, function (err, shuffled) {
-
-    req.body.content.data = makeDataUri(buffer.type, shuffled);
-    req.body.content.type = buffer.type;
-    res.json(req.body);
-
-  });
-
-});
-
-
-/**
- * Ping Pong Service
- */
-
-app.get('/pingpoing', function (req, res) {
-  res.status(200).end();
-});
-
-app.post('/pingpong/service', function(req, res) {
-
-  var buffer = dataUriToBuffer(req.body.content.data);
-
-  if (buffer.type !== 'image/gif') {
-    return res.json(req.body);
-  }
-
-  pingpong(buffer, function (err, shuffled) {
-
-    req.body.content.data = makeDataUri(buffer.type, shuffled);
-    req.body.content.type = buffer.type;
-    res.json(req.body);
-
-  });
-
-});
-
-
-/**
- * Test Routes
+ * Add services to expose here, which should each
+ * export a function that takes and returns an image
+ * buffer, obviously returning the modified buffer
  *
  */
+var services = {
+  pingpong: require("./lib/pingpongGif"),
+  shuffle: require("./lib/shuffleGif")
+};
 
-app.get('/test/shuffle/:name', function (req, res) {
 
-  fs.readFile("./gifs/" + req.params.name, function (err, buffer) {
+/**
+ * Create necessary endpoints for each registered service
+ *
+ */
+Object.keys(services).forEach(function (name) {
 
-    shuffle(buffer, function (err, image) {
-      res.send(imgTag(image));
+  var fn = services[name];
+  var rootPath = "/" + name;
+  var servicePath = root + "/service";
+
+  app.get(rootPath, function (req, res) {
+    res.send("GIF PLAY // " + name.toUpperCase());
+  });
+
+  app.post(servicePath, function (req, res) {
+
+    var buffer = dataUriToBuffer(req.body.content.data);
+
+    if (buffer.type !== 'image/gif') {
+      return res.json(req.body);
+    }
+
+    fn(buffer, function (err, transformed) {
+
+      req.body.content.data = makeDataUri(buffer.type, transformed);
+      req.body.content.type = buffer.type;
+      res.json(req.body);
+
     });
 
   });
 
 });
-
-app.get('/test/pingpong/:name', function (req, res) {
-
-  fs.readFile('./gifs/' + req.params.name, function (err, buffer) {
-
-    pingpong(buffer, function (err, image) {
-      res.send(imgTag(image));
-    });
-
-  });
-
-});
-
-var port = nconf.get("port");
-app.listen(port);
-console.log('server running on port: ', port);
