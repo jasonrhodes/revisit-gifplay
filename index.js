@@ -32,6 +32,7 @@ var services = {
 /**
  * Create necessary endpoints for each registered service
  *
+ *
  */
 Object.keys(services).forEach(function (name) {
 
