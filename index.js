@@ -6,7 +6,7 @@ var dataUriToBuffer = require('data-uri-to-buffer');
 var express = require('express');
 
 var app = express();
-nconf.argv().env().file({ file: '../local.json'});
+nconf.argv().env().file({ file: __dirname + '/local.json' });
 
 // Set up some Express settings
 app.use(bodyParser.json({ limit: '1mb' }));
@@ -62,3 +62,7 @@ Object.keys(services).forEach(function (name) {
   });
 
 });
+
+var port = nconf.get("port") || 8000;
+app.listen(port);
+console.log("GIFPLAY app listening on port " + port);
