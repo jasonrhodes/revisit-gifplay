@@ -38,7 +38,7 @@ Object.keys(services).forEach(function (name) {
 
   var fn = services[name];
   var rootPath = "/" + name;
-  var servicePath = root + "/service";
+  var servicePath = rootPath + "/service";
 
   app.get(rootPath, function (req, res) {
     res.send("GIF PLAY // " + name.toUpperCase());
