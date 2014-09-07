@@ -52,7 +52,7 @@ Object.keys(methods).forEach(function (name) {
   var methodTitle = "GIF PLAY // " + name.toUpperCase();
 
   app.get(rootPath, function (req, res) {
-    res.send(methodTitle);
+    res.send("<h1 style='line-height: 60px;'><img src='/icon.gif' />" + methodTitle + "</h1>");
   });
 
   app.get(examplePath, function (req, res) {
@@ -65,7 +65,7 @@ Object.keys(methods).forEach(function (name) {
       }
 
       fn(buffer, function (err, image) {
-        res.send("<h1>" + methodTitle + " EXAMPLE</h1>" + imgTag(image));
+        res.send("<h1 style='line-height: 60px;'><img src='/icon.gif' />" + methodTitle + " EXAMPLE</h1>" + imgTag(image));
       });
 
     });

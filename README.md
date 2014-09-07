@@ -1,4 +1,4 @@
-# GIF PLAY
+# GIF PLAY ![Mario icon](public/icon.gif)
 
 A collection of random reshufflings and mixups of animated GIF frames for revisit.link
 
