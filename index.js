@@ -16,16 +16,22 @@ function makeDataUri(type, buffer) {
   return 'data:' + type + ';base64,' + buffer.toString('base64');
 }
 
+function imgTag(image) {
+  return "<img src='" + makeDataUri("image/gif", image) + "' />";
+}
+
 
 /**
  * Add services to expose here, which should each
- * export a function that takes and returns an image
- * buffer, obviously returning the modified buffer
+ * export a function that takes an image buffer and
+ * a callback that will be passed the modified
+ * image buffer, usually a writegif cb
  *
  */
-var services = {
+var methods = {
   pingpong: require("./lib/pingpongGif"),
-  shuffle: require("./lib/shuffleGif")
+  shuffle: require("./lib/shuffleGif"),
+  slowmo: require("./lib/slowmoGif")
 };
 
 
@@ -34,14 +40,34 @@ var services = {
  *
  *
  */
-Object.keys(services).forEach(function (name) {
+Object.keys(methods).forEach(function (name) {
 
-  var fn = services[name];
+  var fn = methods[name];
   var rootPath = "/" + name;
+  var examplePath = rootPath + "/example/:file";
   var servicePath = rootPath + "/service";
 
+  var methodTitle = "GIF PLAY // " + name.toUpperCase();
+
   app.get(rootPath, function (req, res) {
-    res.send("GIF PLAY // " + name.toUpperCase());
+    res.send(methodTitle);
+  });
+
+  app.get(examplePath, function (req, res) {
+
+    fs.readFile("./gifs/" + req.params.file, function (err, buffer) {
+
+      if (err) {
+        res.send(err);
+        return;
+      }
+
+      fn(buffer, function (err, image) {
+        res.send("<h1>" + methodTitle + " EXAMPLE</h1>" + imgTag(image));
+      });
+
+    });
+
   });
 
   app.post(servicePath, function (req, res) {
@@ -52,9 +78,9 @@ Object.keys(services).forEach(function (name) {
       return res.json(req.body);
     }
 
-    fn(buffer, function (err, transformed) {
+    fn(buffer, function (err, image) {
 
-      req.body.content.data = makeDataUri(buffer.type, transformed);
+      req.body.content.data = makeDataUri(buffer.type, image);
       req.body.content.type = buffer.type;
       res.json(req.body);
 
