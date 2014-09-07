@@ -15,7 +15,7 @@ A collection of random reshufflings and mixups of animated GIF frames for revisi
 
 ### Shuffle
 
-Simple shuffle of the image frames
+Simple shuffle of the image frames.
 
 ![Caleb / shuffle](examples/caleb-shuffle.gif)
 
@@ -27,7 +27,7 @@ Simple shuffle of the image frames
 
 ### Ping Pong
 
-Image plays forward then backward, effectively turning every gif into DATLOOP
+Image plays forward then backward, effectively turning every gif into DATLOOP!!!
 
 ![Caleb / ping pong](examples/caleb-pingpong.gif)
 
@@ -37,9 +37,21 @@ Image plays forward then backward, effectively turning every gif into DATLOOP
 
 ![Jason / ping pong](examples/jason-hand-pingpong.gif)
 
+### Reverse
+
+Just, you know, plays the GIF in reverse.
+
+![Caleb / reverse](examples/caleb-reverse.gif)
+
+![Ryan / reverse](examples/ryan-reverse.gif)
+
+![Laura / reverse](examples/lb-sharing-reverse.gif)
+
+![Jason / reverse](examples/jason-hand-reverse.gif)
+
 ### SloMo
 
-By adding 250ms of delay to every 3rd frame, you produce a faux "slow motion" effect
+By adding 250ms of delay to every 3rd frame, you produce a faux "slow motion" effect.
 
 ![Caleb / slomo](examples/caleb-slomo.gif)
 
@@ -51,7 +63,7 @@ By adding 250ms of delay to every 3rd frame, you produce a faux "slow motion" ef
 
 ### Bouncy
 
-Frame order is 1, 2, 1, 3, 1, 4, 1, 5 etc. creating a "ball bouncing" effect or something
+Frame order is 1, 2, 1, 3, 1, 4, 1, 5 etc. creating a "ball bouncing" effect or something.
 
 ![Caleb / bouncy](examples/caleb-bouncy.gif)
 

@@ -32,7 +32,8 @@ var methods = {
   pingpong: require("./lib/pingpongGif"),
   shuffle: require("./lib/shuffleGif"),
   slowmo: require("./lib/slowmoGif"),
-  bouncy: require("./lib/bouncy")
+  bouncy: require("./lib/bouncy"),
+  reverse: require("./lib/reverse")
 };
 
 
