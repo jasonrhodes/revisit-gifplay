@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var dataUriToBuffer = require('data-uri-to-buffer');
 var express = require('express');
 
+var readimage = require('readimage');
+var writegif = require('writegif');
+
 var app = express();
 nconf.argv().env().file({ file: __dirname + '/local.json' });
 
@@ -33,7 +36,14 @@ var methods = {
   shuffle: require("./lib/shuffleGif"),
   slowmo: require("./lib/slowmoGif"),
   bouncy: require("./lib/bouncy"),
-  reverse: require("./lib/reverse")
+  reverse: require("./lib/reverse"),
+  noop: function (buffer, cb) { cb(null, buffer); },
+  readimagetest: function (buffer, cb) {
+    readimage(buffer, cb);
+  },
+  writegiftest: function (buffer, cb) {
+    readimage(buffer, function (err, buf) { writegif(buf, cb); });
+  }
 };
 
 
