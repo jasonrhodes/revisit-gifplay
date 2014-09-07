@@ -48,3 +48,16 @@ By adding 250ms of delay to every 3rd frame, you produce a faux "slow motion" ef
 ![Laura / slomo](examples/lb-sharing-slomo.gif)
 
 ![Jason / slomo](examples/jason-hand-slomo.gif)
+
+### Bouncy
+
+Frame order is 1, 2, 1, 3, 1, 4, 1, 5 etc. creating a "ball bouncing" effect or something
+
+![Caleb / bouncy](examples/caleb-bouncy.gif)
+
+![Ryan / bouncy](examples/ryan-bouncy.gif)
+
+![Laura / bouncy](examples/lb-sharing-bouncy.gif)
+
+![Jason / bouncy](examples/jason-hand-bouncy.gif)
+
