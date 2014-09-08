@@ -12,7 +12,7 @@ var app = express();
 nconf.argv().env().file({ file: __dirname + '/local.json' });
 
 // Set up some Express settings
-app.use(bodyParser.json({ limit: '1mb' }));
+app.use(bodyParser.json({ limit: '3mb' }));
 app.use(express.static(__dirname + '/public'));
 
 function makeDataUri(type, buffer) {
